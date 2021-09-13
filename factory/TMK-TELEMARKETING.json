@@ -1,0 +1,9 @@
+{
+	"name": "TMK-TELEMARKETING",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3001c1f0-8148-4d7b-9533-74a3eada792b",
+		"tenantId": "b56240ff-98d1-4d13-8e7e-92dcc57a13cc"
+	}
+}
