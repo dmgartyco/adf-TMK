@@ -4,7 +4,14 @@
 		"description": "Carga diaria de [L, V] de las llamadas de Telemarketing. \nETL basada en el fichero de Python de ArtycoDWH01",
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipelineTMKCargaCSV",
+					"type": "PipelineReference"
+				}
+			}
+		],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
