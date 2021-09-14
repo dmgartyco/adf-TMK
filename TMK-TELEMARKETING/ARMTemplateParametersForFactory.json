@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "TMK-TELEMARKETING"
+		},
+		"AzureBlobStorage_connectionString": {
+			"value": ""
+		},
+		"BD_DMG_DESARROLLO_connectionString": {
+			"value": ""
+		},
+		"SqlServerARTYCODW01_connectionString": {
+			"value": ""
+		},
+		"IR-DMG-ARTYCODWH01_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/71da9315-c37b-45b5-8910-78a1b78dd401/resourcegroups/ArtycoDMG/providers/Microsoft.DataFactory/factories/DMG-DF/integrationruntimes/IR-DMG-ARTYCODWH01"
+		}
+	}
+}

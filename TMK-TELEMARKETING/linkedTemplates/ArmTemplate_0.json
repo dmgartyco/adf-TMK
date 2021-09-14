@@ -1,0 +1,1682 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "TMK-TELEMARKETING"
+		},
+		"AzureBlobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureBlobStorage\""
+		},
+		"BD_DMG_DESARROLLO_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"BD_DMG_DESARROLLO\""
+		},
+		"SqlServerARTYCODW01_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"SqlServerARTYCODW01\""
+		},
+		"IR-DMG-ARTYCODWH01_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/71da9315-c37b-45b5-8910-78a1b78dd401/resourcegroups/ArtycoDMG/providers/Microsoft.DataFactory/factories/DMG-DF/integrationruntimes/IR-DMG-ARTYCODWH01"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BD_DMG_DESARROLLO')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('BD_DMG_DESARROLLO_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IR-DMG-ARTYCODWH01')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('IR-DMG-ARTYCODWH01_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DMG_E_TMK_PLANIFICACION')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BD_DMG_DESARROLLO",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TMK/DMG"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "VCC",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CampaignId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactAddress",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InteractionId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Section",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WorkitemType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TipoDeLlamada",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OutboundProcessId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BatchId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Agent",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ManagementResultCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ManagementResultDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TmStmp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Duracion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Facturables",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Carga",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fecha de Planificación",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WaitTime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WrapUpTime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FECHA_CARGA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "USUARIO_CARGA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FechaFichero",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "sa",
+					"table": "E_TMK_PLANIFICACION"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BD_DMG_DESARROLLO')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DMG_E_TMK_REPORTE_SUPERVISION')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BD_DMG_DESARROLLO",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TMK/DMG"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "VCC",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CampaignId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactAddress",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InteractionId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Section",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WorkitemType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TipoDeLlamada",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OutboundProcessId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BatchId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Agent",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ManagementResultCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ManagementResultDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TmStmp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Duracion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Facturables",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Carga",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fecha de Planificación",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WaitTime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WrapUpTime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FECHA_CARGA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "USUARIO_CARGA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FechaFichero",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "sa",
+					"table": "E_TMK_REPORTE_SUPERVISION"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BD_DMG_DESARROLLO')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DMG_E_TMK_SUPERVISION')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BD_DMG_DESARROLLO",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TMK/DMG"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "VCC",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CampaignId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ContactAddress",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InteractionId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Section",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WorkitemType",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TipoDeLlamada",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OutboundProcessId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "BatchId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Agent",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ManagementResultCode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ManagementResultDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TmStmp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Duracion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Facturables",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Carga",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fecha de Planificación",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WaitTime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WrapUpTime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FECHA_CARGA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "USUARIO_CARGA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FechaFichero",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "sa",
+					"table": "E_TMK_SUPERVISION"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BD_DMG_DESARROLLO')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TMK_SupervisionCSV_Directorio')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TMK/STORAGEBLOB"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "supervision",
+						"container": "tmk"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TMK_SupervisionCSV_File')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "TMK/STORAGEBLOB"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"folderPath": "supervision",
+						"container": "tmk"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"nullValue": "NULL",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerARTYCODW01')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerARTYCODW01_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IR-DMG-ARTYCODWH01",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-DMG-ARTYCODWH01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SA_TMK_E_PLANIFICACION')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerARTYCODW01",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TMK/SA_TMK"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "E_PLANIFICACION_jl"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerARTYCODW01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SA_TMK_E_SUPERVISION')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerARTYCODW01",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "TMK/SA_TMK"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "E_SUPERVISION_jl"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerARTYCODW01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflowDMG_to_DMG')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "TMK"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DMG_E_TMK_REPORTE_SUPERVISION",
+								"type": "DatasetReference"
+							},
+							"name": "sourceDMG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DMG_E_TMK_SUPERVISION",
+								"type": "DatasetReference"
+							},
+							"name": "sinkDMGSUPERVISION"
+						},
+						{
+							"dataset": {
+								"referenceName": "DMG_E_TMK_PLANIFICACION",
+								"type": "DatasetReference"
+							},
+							"name": "sinkDMGPLANIFICACION"
+						}
+					],
+					"transformations": [
+						{
+							"name": "Divisioncondicional1"
+						},
+						{
+							"name": "Seleccionar1"
+						}
+					],
+					"script": "source(output(\n\t\tVCC as string,\n\t\tCampaignId as string,\n\t\tContactId as string,\n\t\tContactName as string,\n\t\tContactAddress as string,\n\t\tInteractionId as string,\n\t\tSection as string,\n\t\tWorkitemType as string,\n\t\tTipoDeLlamada as string,\n\t\tOutboundProcessId as string,\n\t\tBatchId as string,\n\t\tAgent as string,\n\t\tManagementResultCode as string,\n\t\tManagementResultDescription as string,\n\t\tTmStmp as string,\n\t\tDuracion as string,\n\t\tFacturables as string,\n\t\tCarga as string,\n\t\t{Fecha de Planificación} as string,\n\t\tWaitTime as string,\n\t\tWrapUpTime as string,\n\t\tFECHA_CARGA as string,\n\t\tUSUARIO_CARGA as string,\n\t\tFechaFichero as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> sourceDMG\nsourceDMG split(!isNull(Agent),\n\tisNull(Agent),\n\tdisjoint: false) ~> Divisioncondicional1@(Agent, NULLAgent)\nDivisioncondicional1@NULLAgent select(mapColumn(\n\t\tVCC,\n\t\tCampaignId,\n\t\tContactId,\n\t\tOutboundProcessId,\n\t\tBatchId,\n\t\tCarga,\n\t\t{Fecha de Planificación},\n\t\tFECHA_CARGA,\n\t\tUSUARIO_CARGA,\n\t\tFechaFichero\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Seleccionar1\nDivisioncondicional1@Agent sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tVCC as string,\n\t\tCampaignId as string,\n\t\tContactId as string,\n\t\tContactName as string,\n\t\tContactAddress as string,\n\t\tInteractionId as string,\n\t\tSection as string,\n\t\tWorkitemType as string,\n\t\tTipoDeLlamada as string,\n\t\tOutboundProcessId as string,\n\t\tBatchId as string,\n\t\tAgent as string,\n\t\tManagementResultCode as string,\n\t\tManagementResultDescription as string,\n\t\tTmStmp as string,\n\t\tDuracion as string,\n\t\tFacturables as string,\n\t\tCarga as string,\n\t\t{Fecha de Planificación} as string,\n\t\tWaitTime as string,\n\t\tWrapUpTime as string,\n\t\tFECHA_CARGA as string,\n\t\tUSUARIO_CARGA as string,\n\t\tFechaFichero as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tVCC,\n\t\tCampaignId,\n\t\tContactId,\n\t\tContactName,\n\t\tContactAddress,\n\t\tInteractionId,\n\t\tSection,\n\t\tWorkitemType,\n\t\tTipoDeLlamada,\n\t\tOutboundProcessId,\n\t\tBatchId,\n\t\tAgent,\n\t\tManagementResultCode,\n\t\tManagementResultDescription,\n\t\tTmStmp,\n\t\tDuracion,\n\t\tFacturables,\n\t\tCarga,\n\t\t{Fecha de Planificación},\n\t\tWaitTime,\n\t\tWrapUpTime,\n\t\tFECHA_CARGA,\n\t\tUSUARIO_CARGA,\n\t\tFechaFichero\n\t)) ~> sinkDMGSUPERVISION\nSeleccionar1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tVCC as string,\n\t\tCampaignId as string,\n\t\tContactId as string,\n\t\tContactName as string,\n\t\tContactAddress as string,\n\t\tInteractionId as string,\n\t\tSection as string,\n\t\tWorkitemType as string,\n\t\tTipoDeLlamada as string,\n\t\tOutboundProcessId as string,\n\t\tBatchId as string,\n\t\tAgent as string,\n\t\tManagementResultCode as string,\n\t\tManagementResultDescription as string,\n\t\tTmStmp as string,\n\t\tDuracion as string,\n\t\tFacturables as string,\n\t\tCarga as string,\n\t\t{Fecha de Planificación} as string,\n\t\tWaitTime as string,\n\t\tWrapUpTime as string,\n\t\tFECHA_CARGA as string,\n\t\tUSUARIO_CARGA as string,\n\t\tFechaFichero as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tVCC,\n\t\tCampaignId,\n\t\tContactId,\n\t\tOutboundProcessId,\n\t\tBatchId,\n\t\tCarga,\n\t\t{Fecha de Planificación},\n\t\tFECHA_CARGA,\n\t\tUSUARIO_CARGA,\n\t\tFechaFichero\n\t)) ~> sinkDMGPLANIFICACION"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_REPORTE_SUPERVISION')]",
+				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_SUPERVISION')]",
+				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_PLANIFICACION')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipelineTMKCargaCSV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetFile",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "TMK_SupervisionCSV_Directorio",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"modifiedDatetimeStart": {
+									"value": "@startOfDay(getPastTime(1, 'Day'), 'yyyy-MM-ddThh:mm:ss.fffZ')\n",
+									"type": "Expression"
+								},
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetFile').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "CopyData",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "tmk/supervision/@{activity('GetFile').output.childItems}"
+										},
+										{
+											"name": "Destination",
+											"value": "dbo.E_SUPERVISION_jl"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"additionalColumns": [
+												{
+													"name": "FECHA_CARGA",
+													"value": {
+														"value": "@utcnow()",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "USUARIO_CARGA",
+													"value": "ADF-Proceso Importación"
+												},
+												{
+													"name": "FechaFichero",
+													"value": {
+														"value": "@startOfDay(getPastTime(1, 'Day'), 'yyyyMMdd')",
+														"type": "Expression"
+													}
+												}
+											],
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": false,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"preCopyScript": "TRUNCATE TABLE [sa].[E_TMK_REPORTE_SUPERVISION]\nTRUNCATE TABLE [sa].[E_TMK_SUPERVISION]\nTRUNCATE TABLE [sa].[E_TMK_PLANIFICACION]",
+											"tableOption": "autoCreate",
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "VCC",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "VCC",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CampaignId",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "CampaignId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactId",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ContactId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactName",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ContactName",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactAddress",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ContactAddress",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "InteractionId",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "InteractionId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Section",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Section",
+														"type": "Double",
+														"physicalType": "float"
+													}
+												},
+												{
+													"source": {
+														"name": "WorkitemType",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "WorkitemType",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "TipoDeLlamada",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "TipoDeLlamada",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "OutboundProcessId",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "OutboundProcessId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "BatchId",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "BatchId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Agent",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Agent",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ManagementResultCode",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ManagementResultCode",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ManagementResultDescription",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ManagementResultDescription",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "TmStmp",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "TmStmp",
+														"type": "DateTime",
+														"physicalType": "datetime"
+													}
+												},
+												{
+													"source": {
+														"name": "Duracion",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Duracion",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Facturables",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Facturables",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Carga",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Carga",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Fecha de Planificación",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "Fecha de Planificación",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "WaitTime",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "WaitTime",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "WrapUp",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "WrapUpTime",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "FECHA_CARGA",
+														"type": "String"
+													},
+													"sink": {
+														"name": "FECHA_CARGA",
+														"type": "DateTime",
+														"physicalType": "datetime"
+													}
+												},
+												{
+													"source": {
+														"name": "USUARIO_CARGA",
+														"type": "String"
+													},
+													"sink": {
+														"name": "USUARIO_CARGA",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "FechaFichero",
+														"type": "String"
+													},
+													"sink": {
+														"name": "FechaFichero",
+														"type": "Int32",
+														"physicalType": "int"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "TMK_SupervisionCSV_File",
+											"type": "DatasetReference",
+											"parameters": {
+												"FileName": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DMG_E_TMK_REPORTE_SUPERVISION",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "DataflowDMG_to_DMG",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [
+										{
+											"activity": "CopyData",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "1.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "dataflowDMG_to_DMG",
+											"type": "DataFlowReference",
+											"parameters": {},
+											"datasetParameters": {
+												"sourceDMG": {},
+												"sinkDMGSUPERVISION": {},
+												"sinkDMGPLANIFICACION": {}
+											}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								},
+								{
+									"name": "CopyData_SUPERVISION",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "DataflowDMG_to_DMG",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "VCC",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "VCC",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CampaignId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "CampaignId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "ContactId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactName",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "ContactName",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactAddress",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "ContactAddress",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "InteractionId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "InteractionId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Section",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Section",
+														"type": "Double",
+														"physicalType": "float"
+													}
+												},
+												{
+													"source": {
+														"name": "WorkitemType",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "WorkitemType",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "TipoDeLlamada",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "TipoDeLlamada",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "OutboundProcessId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "OutboundProcessId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "BatchId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "BatchId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Agent",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Agent",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ManagementResultCode",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "ManagementResultCode",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ManagementResultDescription",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "ManagementResultDescription",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "TmStmp",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "TmStmp",
+														"type": "DateTime",
+														"physicalType": "datetime"
+													}
+												},
+												{
+													"source": {
+														"name": "Duracion",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Duracion",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Facturables",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Facturables",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Carga",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Carga",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Fecha de Planificación",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Fecha de Planificación",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "WaitTime",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "WaitTime",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "WrapUpTime",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "WrapUpTime",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "FECHA_CARGA",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "FECHA_CARGA",
+														"type": "DateTime",
+														"physicalType": "datetime"
+													}
+												},
+												{
+													"source": {
+														"name": "USUARIO_CARGA",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "USUARIO_CARGA",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "FechaFichero",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "FechaFichero",
+														"type": "Int32",
+														"physicalType": "int"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DMG_E_TMK_SUPERVISION",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SA_TMK_E_SUPERVISION",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "CopyData_PLANIFICACION",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "CopyData_SUPERVISION",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "VCC",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "VCC",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CampaignId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "CampaignId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ContactId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "ContactId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "OutboundProcessId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "OutboundProcessId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "BatchId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "BatchId",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Carga",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Carga",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "Fecha de Planificación",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Fecha de Planificación",
+														"type": "String",
+														"physicalType": "nvarchar"
+													}
+												},
+												{
+													"source": {
+														"name": "FECHA_CARGA",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "FECHA_CARGA",
+														"type": "DateTime",
+														"physicalType": "datetime"
+													}
+												},
+												{
+													"source": {
+														"name": "USUARIO_CARGA",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "USUARIO_CARGA",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "FechaFichero",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "FechaFichero",
+														"type": "Int32",
+														"physicalType": "int"
+													}
+												},
+												{
+													"source": {
+														"name": "TmStmp",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "TmStmp",
+														"type": "DateTime",
+														"physicalType": "datetime"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DMG_E_TMK_PLANIFICACION",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SA_TMK_E_PLANIFICACION",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "SendEmail",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "ForEach",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-65.westeurope.logic.azure.com:443/workflows/712696859b1b46f5aa7c076e5f588f79/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=UOUVYAJGAeKa7vUr2xnfEeX5Cxx3HIHputVA_X5K7ns",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"value": "{\n    \"subject\": \"pipeline: TMKLlamadas_SUPERVISION | Carga Incremental Diaria\",\n    \"message\": \"@{pipeline().Pipeline}\",\n    \"color\": \"green\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcnow()}\",\n    \"emailTo\": \"jose_bautista@artyco.com\",\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"folder": {
+					"name": "TMK"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/TMK_SupervisionCSV_Directorio')]",
+				"[concat(variables('factoryId'), '/datasets/TMK_SupervisionCSV_File')]",
+				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_REPORTE_SUPERVISION')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflowDMG_to_DMG')]",
+				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_SUPERVISION')]",
+				"[concat(variables('factoryId'), '/datasets/SA_TMK_E_SUPERVISION')]",
+				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_PLANIFICACION')]",
+				"[concat(variables('factoryId'), '/datasets/SA_TMK_E_PLANIFICACION')]"
+			]
+		}
+	]
+}

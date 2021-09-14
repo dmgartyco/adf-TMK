@@ -1,0 +1,70 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Nombre de instancia de Data Factory",
+			"defaultValue": "TMK-TELEMARKETING"
+		},
+		"AzureBlobStorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"AzureBlobStorage\""
+		},
+		"BD_DMG_DESARROLLO_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"BD_DMG_DESARROLLO\""
+		},
+		"SqlServerARTYCODW01_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadena protegida para \"connectionString\"de \"SqlServerARTYCODW01\""
+		},
+		"IR-DMG-ARTYCODWH01_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/71da9315-c37b-45b5-8910-78a1b78dd401/resourcegroups/ArtycoDMG/providers/Microsoft.DataFactory/factories/DMG-DF/integrationruntimes/IR-DMG-ARTYCODWH01"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI de la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas."
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Token de SAS para la cuenta de almacenamiento que contiene las plantillas de ARM vinculadas"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "TMK-TELEMARKETING_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_connectionString": {
+						"value": "[parameters('AzureBlobStorage_connectionString')]"
+					},
+					"BD_DMG_DESARROLLO_connectionString": {
+						"value": "[parameters('BD_DMG_DESARROLLO_connectionString')]"
+					},
+					"SqlServerARTYCODW01_connectionString": {
+						"value": "[parameters('SqlServerARTYCODW01_connectionString')]"
+					},
+					"IR-DMG-ARTYCODWH01_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('IR-DMG-ARTYCODWH01_properties_typeProperties_linkedInfo_resourceId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
