@@ -1,0 +1,45 @@
+{
+	"name": "dataflowDMG_to_DMG",
+	"properties": {
+		"folder": {
+			"name": "TMK"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DMG_E_TMK_REPORTE_SUPERVISION",
+						"type": "DatasetReference"
+					},
+					"name": "sourceDMG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DMG_E_TMK_SUPERVISION",
+						"type": "DatasetReference"
+					},
+					"name": "sinkDMGSUPERVISION"
+				},
+				{
+					"dataset": {
+						"referenceName": "DMG_E_TMK_PLANIFICACION",
+						"type": "DatasetReference"
+					},
+					"name": "sinkDMGPLANIFICACION"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Divisioncondicional1"
+				},
+				{
+					"name": "Seleccionar1"
+				}
+			],
+			"script": "source(output(\n\t\tVCC as string,\n\t\tCampaignId as string,\n\t\tContactId as string,\n\t\tContactName as string,\n\t\tContactAddress as string,\n\t\tInteractionId as string,\n\t\tSection as string,\n\t\tWorkitemType as string,\n\t\tTipoDeLlamada as string,\n\t\tOutboundProcessId as string,\n\t\tBatchId as string,\n\t\tAgent as string,\n\t\tManagementResultCode as string,\n\t\tManagementResultDescription as string,\n\t\tTmStmp as string,\n\t\tDuracion as string,\n\t\tFacturables as string,\n\t\tCarga as string,\n\t\t{Fecha de Planificación} as string,\n\t\tWaitTime as string,\n\t\tWrapUpTime as string,\n\t\tFECHA_CARGA as string,\n\t\tUSUARIO_CARGA as string,\n\t\tFechaFichero as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> sourceDMG\nsourceDMG split(!isNull(Agent),\n\tisNull(Agent),\n\tdisjoint: false) ~> Divisioncondicional1@(Agent, NULLAgent)\nDivisioncondicional1@NULLAgent select(mapColumn(\n\t\tVCC,\n\t\tCampaignId,\n\t\tContactId,\n\t\tOutboundProcessId,\n\t\tBatchId,\n\t\tCarga,\n\t\t{Fecha de Planificación},\n\t\tFECHA_CARGA,\n\t\tUSUARIO_CARGA,\n\t\tFechaFichero\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Seleccionar1\nDivisioncondicional1@Agent sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tVCC as string,\n\t\tCampaignId as string,\n\t\tContactId as string,\n\t\tContactName as string,\n\t\tContactAddress as string,\n\t\tInteractionId as string,\n\t\tSection as string,\n\t\tWorkitemType as string,\n\t\tTipoDeLlamada as string,\n\t\tOutboundProcessId as string,\n\t\tBatchId as string,\n\t\tAgent as string,\n\t\tManagementResultCode as string,\n\t\tManagementResultDescription as string,\n\t\tTmStmp as string,\n\t\tDuracion as string,\n\t\tFacturables as string,\n\t\tCarga as string,\n\t\t{Fecha de Planificación} as string,\n\t\tWaitTime as string,\n\t\tWrapUpTime as string,\n\t\tFECHA_CARGA as string,\n\t\tUSUARIO_CARGA as string,\n\t\tFechaFichero as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tVCC,\n\t\tCampaignId,\n\t\tContactId,\n\t\tContactName,\n\t\tContactAddress,\n\t\tInteractionId,\n\t\tSection,\n\t\tWorkitemType,\n\t\tTipoDeLlamada,\n\t\tOutboundProcessId,\n\t\tBatchId,\n\t\tAgent,\n\t\tManagementResultCode,\n\t\tManagementResultDescription,\n\t\tTmStmp,\n\t\tDuracion,\n\t\tFacturables,\n\t\tCarga,\n\t\t{Fecha de Planificación},\n\t\tWaitTime,\n\t\tWrapUpTime,\n\t\tFECHA_CARGA,\n\t\tUSUARIO_CARGA,\n\t\tFechaFichero\n\t)) ~> sinkDMGSUPERVISION\nSeleccionar1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tVCC as string,\n\t\tCampaignId as string,\n\t\tContactId as string,\n\t\tContactName as string,\n\t\tContactAddress as string,\n\t\tInteractionId as string,\n\t\tSection as string,\n\t\tWorkitemType as string,\n\t\tTipoDeLlamada as string,\n\t\tOutboundProcessId as string,\n\t\tBatchId as string,\n\t\tAgent as string,\n\t\tManagementResultCode as string,\n\t\tManagementResultDescription as string,\n\t\tTmStmp as string,\n\t\tDuracion as string,\n\t\tFacturables as string,\n\t\tCarga as string,\n\t\t{Fecha de Planificación} as string,\n\t\tWaitTime as string,\n\t\tWrapUpTime as string,\n\t\tFECHA_CARGA as string,\n\t\tUSUARIO_CARGA as string,\n\t\tFechaFichero as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tVCC,\n\t\tCampaignId,\n\t\tContactId,\n\t\tOutboundProcessId,\n\t\tBatchId,\n\t\tCarga,\n\t\t{Fecha de Planificación},\n\t\tFECHA_CARGA,\n\t\tUSUARIO_CARGA,\n\t\tFechaFichero\n\t)) ~> sinkDMGPLANIFICACION"
+		}
+	}
+}
