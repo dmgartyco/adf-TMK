@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Carga diaria de [L, V] de las llamadas de Telemarketing. \nETL basada en el fichero de Python de ArtycoDWH01",
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
