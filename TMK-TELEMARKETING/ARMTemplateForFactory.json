@@ -1677,6 +1677,52 @@
 				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_SUPERVISION')]",
 				"[concat(variables('factoryId'), '/datasets/DMG_E_TMK_PLANIFICACION')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/triggerTMK_LlamadasREPORTE_SUPERVISION')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Carga diaria de [L, V] de las llamadas de Telemarketing. \nETL basada en el fichero de Python de ArtycoDWH01",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipelineTMKCargaCSV",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2021-09-14T11:10:00",
+						"timeZone": "Romance Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								4
+							],
+							"weekDays": [
+								"Monday",
+								"Tuesday",
+								"Wednesday",
+								"Thursday",
+								"Friday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipelineTMKCargaCSV')]"
+			]
 		}
 	]
 }
