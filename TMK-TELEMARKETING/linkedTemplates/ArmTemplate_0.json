@@ -722,7 +722,7 @@
 												{
 													"name": "FechaFichero",
 													"value": {
-														"value": "@startOfDay(getPastTime(1, 'Day'), 'yyyyMMdd')",
+														"value": "@startOfDay(getPastTime(0, 'Day'), 'yyyyMMdd')",
 														"type": "Expression"
 													}
 												}
@@ -1665,7 +1665,8 @@
 				"folder": {
 					"name": "TMK"
 				},
-				"annotations": []
+				"annotations": [],
+				"lastPublishTime": "2021-09-14T09:40:23Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/TMK_SupervisionCSV_Directorio')]",
