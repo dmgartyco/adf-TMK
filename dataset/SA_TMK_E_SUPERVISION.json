@@ -1,0 +1,20 @@
+{
+	"name": "SA_TMK_E_SUPERVISION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServerARTYCODW01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TMK/SA_TMK"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "E_SUPERVISION_jl"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

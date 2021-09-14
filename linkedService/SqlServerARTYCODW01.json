@@ -1,0 +1,16 @@
+{
+	"name": "SqlServerARTYCODW01",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=tcp:ARTYCODWH01;initial catalog=SA_TMK;user id=DMG",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4Mjc1MmY0YS00NGVlLTRkZTctOWZiMS04MDNhODc3YWRhYzYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-DMG-ARTYCODWH01",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

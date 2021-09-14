@@ -1,0 +1,117 @@
+{
+	"name": "DMG_E_TMK_SUPERVISION",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BD_DMG_DESARROLLO",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TMK/DMG"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "VCC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CampaignId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ContactId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ContactName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ContactAddress",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InteractionId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Section",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WorkitemType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TipoDeLlamada",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OutboundProcessId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "BatchId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Agent",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ManagementResultCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ManagementResultDescription",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TmStmp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Duracion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facturables",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Carga",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fecha de Planificación",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WaitTime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WrapUpTime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FECHA_CARGA",
+				"type": "nvarchar"
+			},
+			{
+				"name": "USUARIO_CARGA",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FechaFichero",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "sa",
+			"table": "E_TMK_SUPERVISION"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
