@@ -1,0 +1,12 @@
+{
+	"name": "IR-DMG-ARTYCODWH01",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/71da9315-c37b-45b5-8910-78a1b78dd401/resourcegroups/ArtycoDMG/providers/Microsoft.DataFactory/factories/DMG-DF/integrationruntimes/IR-DMG-ARTYCODWH01",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}
