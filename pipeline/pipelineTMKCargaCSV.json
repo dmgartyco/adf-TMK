@@ -94,7 +94,7 @@
 										{
 											"name": "FechaFichero",
 											"value": {
-												"value": "@startOfDay(getPastTime(1, 'Day'), 'yyyyMMdd')",
+												"value": "@startOfDay(getPastTime(0, 'Day'), 'yyyyMMdd')",
 												"type": "Expression"
 											}
 										}
