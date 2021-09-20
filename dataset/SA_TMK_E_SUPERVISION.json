@@ -13,7 +13,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "E_SUPERVISION_jl"
+			"table": "E_SUPERVISION"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
